@@ -44,6 +44,8 @@ module.exports = function (RED) {
                 setPowerState(true);
             } else if (msg.payload === 'off' || msg.topic === 'off') {
                 setPowerState(false);
+            } else if (msg.payload === 'infos' || msg.topic === 'infos') {
+                getInfos(false);
             } else {
                 errorHandler(new Error('Actuation must be one of [on, off, consumption]'));
             }
@@ -53,6 +55,24 @@ module.exports = function (RED) {
             client.socket.close();
         });
 
+		function getInfos(){
+			node.status({
+                fill: 'blue',
+                shape: 'dot',
+                text: 'get info start'
+            });
+            plug.getInfo().then(function (args) {
+				//var str = JSON.stringify(args);
+                node.status({
+                    fill: 'green',
+                    shape: 'circle',
+                    text: 'relai_state='+args.sysInfo.relay_state
+                });
+				//node.log('relai_state='+args.sysInfo.relay_state);
+				node.send({payload: args});
+            }).catch(errorHandler);
+		}
+		
         function setPowerState(on) {
             node.status({
                 fill: 'orange',
