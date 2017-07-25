@@ -21,6 +21,11 @@ Drag this node on to a worksheet and double click it. Enter the IP address of th
 
 # Actuation
 
+## Get infos
+
+To get infos like the current state, send a message to this node's input with the topic or payload set to 'infos'.
+The json data will be sent via this node's output in `msg.payload`.
+
 ## Turn on
 
 To turn the HS100 on, send a message to this node's input with the topic or payload set to `on`.
